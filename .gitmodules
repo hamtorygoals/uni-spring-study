@@ -1,0 +1,3 @@
+[submodule "uni-spring-study-config"]
+    path = uni-spring-study-config
+    url = https://github.com/hamtorygoals/uni-spring-study-config.git
