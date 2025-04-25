@@ -13,6 +13,12 @@ java {
     }
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -39,22 +45,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-
-processResources {
-    dependsOn 'copyResources'
-}
-
-tasks.register('copyResources', Copy) {
-    from './uni-spring-study-config' //여기로부터 가져와서
-    include '*.properties'
-    into 'src/main/resources/' //여기에 복사를 할 것이다!!
-}
-
-test {
-    doFirst {
-        def profile = project.hasProperty('profile') ? project.property('profile').toString() : 'local'
-        jvmArgs = ["-Dspring.profiles.active=${profile}"]
-    }
 }
