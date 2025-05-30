@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -25,6 +26,7 @@ public class AuthService {
   private final UserRepository userRepository;
   private final AuthMapper authMapper;
 
+  @Transactional
   public LoginResponse login(LoginRequest loginRequest) {
     User user = userRepository.findByUsername(loginRequest.getUsername())
         .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
@@ -37,7 +39,7 @@ public class AuthService {
     authenticationManager.authenticate(authenticationToken);
 
     // 액세스 토큰 및 리프레시 토큰 발급
-    String accessToken = jwtProvider.createAccessToken(user.getUsername());
+    String accessToken = jwtProvider.createAccessToken(user.getUsername(), user.getRole().toString(), user.getProvider());
     String refreshToken = jwtProvider.createRefreshToken(user.getUsername(),
         UUID.randomUUID().toString());
 

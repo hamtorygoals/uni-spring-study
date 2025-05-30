@@ -33,8 +33,11 @@ public class User extends BaseTimeEntity{
   private String username;
 
   @JsonIgnore  //제이슨 형식으로 데이터 응답할 때, 패스워드 필드에 대해선, 절대 보내지 않겠다!!
-  @Column(name = "password", nullable = false) //비밀번호는 보호해야하니까
+  @Column(name = "password") //소셜로그인 시 널값이어야함!!
   private String password;
+
+  @Column(name = "provider", nullable = false)
+  private String provider;
 
   @JsonIgnore  //보내지 않을 것이란 걸 명시
   @Column(name = "refresh_token")
@@ -47,5 +50,13 @@ public class User extends BaseTimeEntity{
 
   public void createRefreshToken(String refreshToken) {
     this.refreshToken = refreshToken;
+  }
+
+  public static User fromOAuth(String email, String provider) {
+    return User.builder()
+        .username(email)
+        .provider(provider)
+        .role(Role.USER)
+        .build();
   }
 }

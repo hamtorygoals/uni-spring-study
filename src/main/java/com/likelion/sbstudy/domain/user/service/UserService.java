@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 //서비스 작성할 땐, 이렇게 세 어노테이션 항상 넣기!!
 @Service
@@ -22,8 +23,9 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final UserMapper userMapper;
 
+  @Transactional
   public SignUpResponse signUp(SignUpRequest request) {
-    System.out.println(request.getUsername() + ", " + request.getPassword());
+    //System.out.println(request.getUsername() + ", " + request.getPassword());
     if (userRepository.existsByUsername(request.getUsername())) {
       throw new CustomException(UserErrorCode.USERNAME_ALREADY_EXISTS);
     }
@@ -36,6 +38,7 @@ public class UserService {
     User user = User.builder()
         .username(request.getUsername())
         .password(encodedPassword)
+        .provider("custom")
         .build();
 
     // 저장 및 로깅
