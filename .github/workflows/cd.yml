@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/actions-runner/_work/uni-spring-study/uni-spring-study/docker
+            cd /home/ubuntu/actions-runner/_work/uni-spring-study/uni-spring-study/docker
             echo "$ENV" > ./.env
             echo "PROFILE=dev" >> ./.env 
 
@@ -76,6 +76,6 @@ jobs:
             docker compose -f docker-compose.yml -f docker-compose-${COLOR}.yml pull
             docker compose -f docker-compose.yml -f docker-compose-${COLOR}.yml up -d --build
 
-              echo "Stopping previous $PREV_COLOR app container"
-              docker compose -f docker-compose.yml -f docker-compose-${PREV_COLOR}.yml stop app-${PREV_COLOR} || true
-            fi
+            echo "Stopping previous $PREV_COLOR app container"
+            docker compose -f docker-compose.yml -f docker-compose-${PREV_COLOR}.yml stop app-${PREV_COLOR} || true
+            
