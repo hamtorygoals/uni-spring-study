@@ -17,6 +17,7 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v4
         with:
+          repository: hamtorygoals/uni-spring-study
           token: ${{ secrets.GIT_ACTION_TOKEN }}
           submodules: true
 
