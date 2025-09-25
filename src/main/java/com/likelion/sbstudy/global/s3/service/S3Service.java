@@ -181,4 +181,18 @@ public class S3Service {
       return false;
     }
   }
+
+  public void deleteFileByUrl(String fileUrl) {
+    String bucketUrlPrefix =
+        "https://" + s3Config.getBucket() + ".s3." + s3Config.getRegion() + ".amazonaws.com/";
+
+    if (!fileUrl.startsWith(bucketUrlPrefix)) {
+      throw new CustomException(S3ErrorCode.FILE_NOT_FOUND); // 또는 다른 오류 정의
+    }
+
+    // URL에서 keyName만 추출
+    String keyName = fileUrl.substring(bucketUrlPrefix.length());
+
+    deleteFile(keyName);
+  }
 }
